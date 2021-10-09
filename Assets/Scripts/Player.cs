@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
 public class Player : MonoBehaviour {
@@ -11,24 +12,31 @@ public class Player : MonoBehaviour {
     public float jumpForce;
     public float fallingGravityScale;
 
-    // public float dashForce;
     public float dashSpeed;
+    // public float dashForce;
     public float dashTime;
     public Color dashColor;
     
     // KeyCodes
     public KeyCode jumpKey;
     public KeyCode dashKey;
+    public KeyCode restockVerbsKey;
 
     // components & necessary junk
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Color originalColor;
+    public enum Verb {
+        Jump,
+        Dash,
+    }
     
     // state
+    private List<Verb> availableVerbs;
     private bool inMidair;
     private bool isDashing;
     private float dashTimer;
+
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -38,6 +46,8 @@ public class Player : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         originalColor = sprite.color;
+        availableVerbs = new List<Verb>();
+        RestockVerbs();
     }
 
     // Update is called once per frame
@@ -70,16 +80,22 @@ public class Player : MonoBehaviour {
                 sprite.color = originalColor;
             }
         }
-
+        
         // VERBS
         // jump
-        if (Input.GetKeyDown(jumpKey)) {
+        if (availableVerbs.Contains(Verb.Jump) && Input.GetKeyDown(jumpKey)) {
             Jump();
+            availableVerbs.Remove(availableVerbs.Find(verb => verb == Verb.Jump));
+            PrintAvailableVerbs();
         }
         // dash
-        if (Input.GetKeyDown(dashKey)) {
+        if (availableVerbs.Contains(Verb.Dash) && Input.GetKeyDown(dashKey)) {
             Dash();
+            availableVerbs.Remove(availableVerbs.Find(verb => verb == Verb.Dash));
+            PrintAvailableVerbs();
         }
+        // restock verbs
+        if(Input.GetKeyDown(restockVerbsKey)) RestockVerbs();
     }
 
     private void Jump() {
@@ -92,6 +108,34 @@ public class Player : MonoBehaviour {
         isDashing = true;
         dashTimer = dashTime;
         sprite.color = dashColor;
+    }
+
+    private void RestockVerbs() {
+        availableVerbs = new List<Verb>();
+        // uniform distribution, all equal chance
+        List<Verb> allVerbs = new List<Verb> {Verb.Jump, Verb.Dash};
+        for (var i = 0; i < 3; i++) {
+            var randomIndex = Random.Range(0, 3);
+            var randomVerb = allVerbs[randomIndex];
+            availableVerbs.Add(randomVerb);
+        }
+        Debug.Log("GENERATED NEW VERBS");
+        PrintAvailableVerbs();
+    }
+
+    private void PrintAvailableVerbs() {
+        string str = "[";
+        for (int i = 0; i < 3; i++) {
+            if (i >= availableVerbs.Count) {
+                str += "__";
+            }
+            else {
+                str += availableVerbs[i].ToString();
+            }
+            if (i < 2) str += ", ";
+        }
+        str += "]";
+        Debug.Log(str);
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
