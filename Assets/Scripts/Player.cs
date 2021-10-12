@@ -33,6 +33,10 @@ public class Player : MonoBehaviour {
     private SpriteRenderer sprite;
     private Color originalColor;
 
+
+    //Basically to help know when to set rb.y velocity to 0
+    private bool jumpingWhileDashing = false;
+
     private bool isAlive = true;
     public enum Verb {
         Jump,
@@ -88,8 +92,13 @@ public class Player : MonoBehaviour {
             //If statement below needed?
 
             //if (rb.velocity.x < dashSpeed) {
+               if(!jumpingWhileDashing){
+                
                 rb.velocity = new Vector2(dashSpeed, 0);
                 rb.gravityScale=0f;
+                }   
+
+            
             //}
             
             // decrement dash timer
@@ -130,6 +139,9 @@ public class Player : MonoBehaviour {
     private void Jump() {
         rb.AddForce(new Vector2(0, jumpForce));
         inMidair = true;
+        if(isDashing){
+            jumpingWhileDashing=true;
+        }
     }
 
     private void Dash() {
@@ -181,6 +193,7 @@ public class Player : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Ground")) {
             inMidair = false;
+            jumpingWhileDashing=false;
         }
     }
 

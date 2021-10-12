@@ -337,7 +337,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234895278}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 3.71, y: 1.36, z: 19.400192}
+  m_LocalPosition: {x: 3.71, y: 2.09, z: 19.400192}
   m_LocalScale: {x: 1.5000001, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 443158593}
@@ -638,7 +638,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470416997}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1.71, y: 1.3599999, z: 19.400192}
+  m_LocalPosition: {x: 1.71, y: 2.0899956, z: 19.400192}
   m_LocalScale: {x: 1.5000001, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 443158593}
@@ -931,7 +931,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 798875885}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 2.7050533, y: 1.3597176, z: 19.400192}
+  m_LocalPosition: {x: 2.7050533, y: 2.0897133, z: 19.400192}
   m_LocalScale: {x: 1.5000001, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 443158593}
@@ -1055,7 +1055,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 818898704}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.35, y: -1.72, z: 19.400192}
+  m_LocalPosition: {x: 8.53, y: -1.72, z: 19.400192}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 128794086}
@@ -1380,7 +1380,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 994743823}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -777.45996, y: -225.33, z: -10}
+  m_LocalPosition: {x: -791.99, y: -225.33, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 519420032}
@@ -1428,7 +1428,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037726297}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 4.72, y: 1.3599999, z: 19.400192}
+  m_LocalPosition: {x: 4.72, y: 2.0899956, z: 19.400192}
   m_LocalScale: {x: 1.5000001, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 443158593}
@@ -2092,7 +2092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5871415686297176148, guid: 1dcc42e0bf5720e44a765069d1184f7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.349976
+      value: 8.530029
       objectReference: {fileID: 0}
     - target: {fileID: 5871415686297176148, guid: 1dcc42e0bf5720e44a765069d1184f7c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2144,14 +2144,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4230076942285529233, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
-      propertyPath: dashTime
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4230076942285529233, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
-      propertyPath: cards.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4230076942285529233, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
       propertyPath: cards.Array.data[0]
       value: 
       objectReference: {fileID: 2023092800}
@@ -2169,7 +2161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7799296505339027025, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -779.95996
+      value: -794.49
       objectReference: {fileID: 0}
     - target: {fileID: 7799296505339027025, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2209,10 +2201,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7799296505339027027, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7799296505339027027, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
