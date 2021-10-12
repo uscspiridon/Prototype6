@@ -150,7 +150,7 @@ public class Player : MonoBehaviour {
         {
             GroundPound();
             RemoveVerb(Verb.GroundPound);
-            RemoveCardUI(Verb.GroundPound);
+            RemoveCardUI(Array.Find(cards, card => card.GetVerb() == Verb.GroundPound));
         }
         // restock verbs
         if(Input.GetKeyDown(restockVerbsKey)) RestockVerbs();
