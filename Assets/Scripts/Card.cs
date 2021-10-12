@@ -8,6 +8,7 @@ public class Card : MonoBehaviour
 {
     public Sprite dash;
     public Sprite jump;
+    public Sprite groundPound;
     public Sprite blank;
     private Player.Verb verb = Player.Verb.None;
     private Image thisImage;
@@ -19,6 +20,10 @@ public class Card : MonoBehaviour
         this.verb=verb;
         if(verb==Player.Verb.Dash){
            thisImage.sprite=dash;
+        }
+        else if (verb == Player.Verb.GroundPound)
+        {
+            thisImage.sprite = groundPound;
         }
         else if(verb==Player.Verb.Jump){
            thisImage.sprite=jump;
