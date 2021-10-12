@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
+
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
 public class Player : MonoBehaviour {
@@ -22,13 +25,19 @@ public class Player : MonoBehaviour {
     public KeyCode dashKey;
     public KeyCode restockVerbsKey;
 
+    //Cards to interact with
+    public Card[] cards;
+
     // components & necessary junk
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Color originalColor;
+
+    private bool isAlive = true;
     public enum Verb {
         Jump,
         Dash,
+        None
     }
     
     // state
@@ -36,6 +45,7 @@ public class Player : MonoBehaviour {
     private bool inMidair;
     private bool isDashing;
     private float dashTimer;
+    private float deathDelay = 2f;
 
 
     private void Awake() {
@@ -56,10 +66,15 @@ public class Player : MonoBehaviour {
         // on ground
         if (!inMidair) {
             rb.gravityScale = 1f;
-            // move right
-            if (rb.velocity.x < minSpeed) {
-                rb.velocity = new Vector2(minSpeed, rb.velocity.y);
-            }
+            
+            //Only add speed if alive
+            if(isAlive){
+                // move right
+                if (rb.velocity.x < minSpeed) {
+                    rb.velocity = new Vector2(minSpeed, rb.velocity.y);
+                }
+            }   
+
         }
 
         // in midair
@@ -70,9 +85,13 @@ public class Player : MonoBehaviour {
 
         // dashing
         if (isDashing) {
-            if (rb.velocity.x < dashSpeed) {
-                rb.velocity = new Vector2(dashSpeed, rb.velocity.y);
-            }
+            //If statement below needed?
+
+            //if (rb.velocity.x < dashSpeed) {
+                rb.velocity = new Vector2(dashSpeed, 0);
+                rb.gravityScale=0f;
+            //}
+            
             // decrement dash timer
             dashTimer -= Time.deltaTime;
             if (dashTimer <= 0) {
@@ -80,24 +99,34 @@ public class Player : MonoBehaviour {
                 sprite.color = originalColor;
             }
         }
-        
+
         // VERBS
         // jump
         if (availableVerbs.Contains(Verb.Jump) && Input.GetKeyDown(jumpKey)) {
             Jump();
             availableVerbs.Remove(availableVerbs.Find(verb => verb == Verb.Jump));
+            RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Jump));
             PrintAvailableVerbs();
         }
         // dash
         if (availableVerbs.Contains(Verb.Dash) && Input.GetKeyDown(dashKey)) {
             Dash();
             availableVerbs.Remove(availableVerbs.Find(verb => verb == Verb.Dash));
+            RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Dash));
+
             PrintAvailableVerbs();
         }
         // restock verbs
         if(Input.GetKeyDown(restockVerbsKey)) RestockVerbs();
     }
-
+    //Called by spikes
+    public void Die()
+    {
+        isAlive = false;
+        
+        //Restart level after a delay
+        StartCoroutine(RestartDelay(deathDelay));
+    }
     private void Jump() {
         rb.AddForce(new Vector2(0, jumpForce));
         inMidair = true;
@@ -113,14 +142,25 @@ public class Player : MonoBehaviour {
     private void RestockVerbs() {
         availableVerbs = new List<Verb>();
         // uniform distribution, all equal chance
-        List<Verb> allVerbs = new List<Verb> {Verb.Jump, Verb.Dash};
+        List<Verb> allVerbs = new List<Verb> {Verb.Jump, Verb.Dash, Verb.None};
         for (var i = 0; i < 3; i++) {
             var randomIndex = Random.Range(0, 3);
+            Debug.Log(randomIndex);
             var randomVerb = allVerbs[randomIndex];
             availableVerbs.Add(randomVerb);
         }
         Debug.Log("GENERATED NEW VERBS");
         PrintAvailableVerbs();
+        SetCardsUI(); 
+    }
+
+    private void SetCardsUI(){
+        for(int i =0; i<cards.Length;i++){
+            cards[i].SetCard(availableVerbs[i]);
+        }
+    }
+    private void RemoveCardUI(Card card){
+        card.SetCard(Verb.None);
     }
 
     private void PrintAvailableVerbs() {
@@ -143,4 +183,13 @@ public class Player : MonoBehaviour {
             inMidair = false;
         }
     }
+
+    //Called upon player death
+    IEnumerator RestartDelay(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
+    }
+
 }
