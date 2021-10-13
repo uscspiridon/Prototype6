@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 
-[RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(Animator))]
 public class Player : MonoBehaviour {
     // constants
     public float minSpeed;
@@ -21,6 +21,8 @@ public class Player : MonoBehaviour {
     // public float dashForce;
     public float dashTime;
     public Color dashColor;
+
+    public float crouchTime;
     
     // KeyCodes
     public KeyCode jumpKey;
@@ -35,6 +37,7 @@ public class Player : MonoBehaviour {
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Color originalColor;
+    private Animator animator;
     
     // Basically to help know when to set rb.y velocity to 0
     private bool jumpedAfterDash = false;
@@ -50,15 +53,21 @@ public class Player : MonoBehaviour {
     // state
     private List<Verb> availableVerbs;
     private bool inMidair;
+    
     private bool isDashing;
+    private float dashTimer;
+
+    private bool isCrouching;
+    private float crouchTimer;
     private bool isPounding;
     private bool startedPound;
-    private float dashTimer;
+    
     private float deathDelay = 2f;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -112,6 +121,16 @@ public class Player : MonoBehaviour {
             }
         }
 
+        // crouching
+        if (isCrouching) {
+            crouchTimer -= Time.deltaTime;
+            if (crouchTimer <= 0) {
+                isCrouching = false;
+            }
+        }
+        animator.SetBool("crouched", isCrouching);
+
+
         if (isPounding)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
@@ -142,13 +161,17 @@ public class Player : MonoBehaviour {
                 jumpedAfterDash = false;
             }
         }
-
-        // ground pound
+        // crouch
         if(availableVerbs.Contains(Verb.Crouch) && Input.GetKeyDown(crouchKey))
         {
+            // crouch
+            isCrouching = true;
+            crouchTimer = crouchTime;
+            // ground pound if in midair
             if (inMidair) {
                 GroundPound();
             }
+            
             RemoveVerb(Verb.Crouch);
             RemoveCardUI(Array.Find(cards, card => card.GetVerb() == Verb.Crouch));
         }
