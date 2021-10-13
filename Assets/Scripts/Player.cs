@@ -14,6 +14,8 @@ public class Player : MonoBehaviour {
     public float minSpeed;
     
     public float jumpForce;
+    public float longJumpForce;
+    public float highJumpMultiplier;
     public float fallingGravityScale;
     public float groundPoundGravityScale;
 
@@ -62,7 +64,7 @@ public class Player : MonoBehaviour {
     private bool isPounding;
     private bool startedPound;
     
-    private float deathDelay = 2f;
+    private float deathDelay = 0f;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -102,24 +104,18 @@ public class Player : MonoBehaviour {
 
         // dashing
         if (isDashing) {
-            //If statement below needed?
+           if(!jumpedAfterDash){                
+               rb.velocity = new Vector2(dashSpeed, 0);
+               rb.gravityScale=0f;
+           }   
 
-            //if (rb.velocity.x < dashSpeed) {
-               if(!jumpedAfterDash){                
-                   rb.velocity = new Vector2(dashSpeed, 0);
-                   rb.gravityScale=0f;
-               }   
-
-            
-            //}
-            
-            // decrement dash timer
-            dashTimer -= Time.deltaTime;
-            if (dashTimer <= 0) {
-                isDashing = false;
-                sprite.color = originalColor;
-            }
+           // decrement dash timer
+           dashTimer -= Time.deltaTime;
+           if (dashTimer <= 0) { 
+               isDashing = false;
+           }
         }
+        else sprite.color = originalColor;
 
         // crouching
         if (isCrouching) {
@@ -146,7 +142,23 @@ public class Player : MonoBehaviour {
         // VERBS
         // jump
         if (availableVerbs.Contains(Verb.Jump) && Input.GetKeyDown(jumpKey)) {
-            Jump();
+            inMidair = true;
+            
+            float xForce = 0;
+            float yForce = jumpForce;
+            // longer jump
+            if (isDashing) {
+                xForce = longJumpForce;
+                isDashing = false;
+            }
+            // higher jump 
+            if (isCrouching) {
+                yForce *= highJumpMultiplier;
+                isCrouching = false;
+            }
+            Debug.Log("adding force " + xForce + " and " + yForce);
+            rb.AddForce(new Vector2(xForce, yForce));
+
             RemoveVerb(Verb.Jump);
             RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Jump));
             PrintAvailableVerbs();
@@ -187,11 +199,7 @@ public class Player : MonoBehaviour {
         StartCoroutine(RestartDelay(deathDelay));
     }
     private void Jump() {
-        rb.AddForce(new Vector2(0, jumpForce));
-        inMidair = true;
-        if(isDashing){
-            jumpedAfterDash=true;
-        }
+        
     }
 
     private void Dash() {

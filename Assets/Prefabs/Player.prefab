@@ -255,6 +255,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 5
   jumpForce: 400
+  longJumpForce: 200
+  highJumpMultiplier: 1.5
   fallingGravityScale: 2.5
   groundPoundGravityScale: 7
   dashSpeed: 10
@@ -264,7 +266,7 @@ MonoBehaviour:
   jumpKey: 273
   dashKey: 275
   crouchKey: 274
-  restockVerbsKey: 114
+  restockVerbsKey: 32
   cards:
   - {fileID: 0}
   - {fileID: 0}
