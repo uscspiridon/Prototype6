@@ -57,10 +57,10 @@ public class Player : MonoBehaviour {
     private List<Verb> availableVerbs;
     private bool inMidair;
     
-    private bool isDashing;
+    public bool isDashing;
     private float dashTimer;
 
-    private bool isCrouching;
+    public bool isCrouching;
     private float crouchTimer;
     private bool isPounding;
     private bool startedPound;
