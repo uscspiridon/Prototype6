@@ -2461,10 +2461,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4230076942285529233, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
-      propertyPath: groundPoundKey
-      value: 274
-      objectReference: {fileID: 0}
-    - target: {fileID: 4230076942285529233, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
       propertyPath: cards.Array.data[0]
       value: 
       objectReference: {fileID: 2023092800}
@@ -2476,10 +2472,6 @@ PrefabInstance:
       propertyPath: cards.Array.data[2]
       value: 
       objectReference: {fileID: 1695919192}
-    - target: {fileID: 4230076942285529233, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
-      propertyPath: groundPoundGravityScale
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 7799296505339027025, guid: bcc86fe6998d0468a8ee2f41b9db38b6, type: 3}
       propertyPath: m_RootOrder
       value: 2

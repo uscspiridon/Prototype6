@@ -255,11 +255,13 @@ MonoBehaviour:
   minSpeed: 5
   jumpForce: 400
   fallingGravityScale: 2.5
+  groundPoundGravityScale: 7
   dashSpeed: 10
   dashTime: 0.5
   dashColor: {r: 1, g: 0, b: 0, a: 1}
   jumpKey: 273
   dashKey: 275
+  groundPoundKey: 274
   restockVerbsKey: 114
   cards:
   - {fileID: 0}

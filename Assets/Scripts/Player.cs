@@ -26,8 +26,7 @@ public class Player : MonoBehaviour {
     public KeyCode dashKey;
     public KeyCode groundPoundKey;
     public KeyCode restockVerbsKey;
-
-
+    
     //Cards to interact with
     public Card[] cards;
 
@@ -35,11 +34,11 @@ public class Player : MonoBehaviour {
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Color originalColor;
-
-
-    //Basically to help know when to set rb.y velocity to 0
+    
+    // Basically to help know when to set rb.y velocity to 0
     private bool jumpedAfterDash = false;
     private bool isAlive = true;
+    
     public enum Verb {
         Jump,
         Dash,
