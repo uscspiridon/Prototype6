@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
@@ -24,7 +25,7 @@ public class Player : MonoBehaviour {
     // KeyCodes
     public KeyCode jumpKey;
     public KeyCode dashKey;
-    public KeyCode groundPoundKey;
+    public KeyCode crouchKey;
     public KeyCode restockVerbsKey;
     
     //Cards to interact with
@@ -42,7 +43,7 @@ public class Player : MonoBehaviour {
     public enum Verb {
         Jump,
         Dash,
-        GroundPound,
+        Crouch,
         None
     }
     
@@ -54,7 +55,6 @@ public class Player : MonoBehaviour {
     private bool startedPound;
     private float dashTimer;
     private float deathDelay = 2f;
-
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -131,7 +131,6 @@ public class Player : MonoBehaviour {
             RemoveVerb(Verb.Jump);
             RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Jump));
             PrintAvailableVerbs();
-            JumpsToGroundPounds();
         }
         // dash
         if (availableVerbs.Contains(Verb.Dash) && Input.GetKeyDown(dashKey)) {
@@ -145,11 +144,13 @@ public class Player : MonoBehaviour {
         }
 
         // ground pound
-        if(availableVerbs.Contains(Verb.GroundPound) && Input.GetKeyDown(groundPoundKey))
+        if(availableVerbs.Contains(Verb.Crouch) && Input.GetKeyDown(crouchKey))
         {
-            GroundPound();
-            RemoveVerb(Verb.GroundPound);
-            RemoveCardUI(Array.Find(cards, card => card.GetVerb() == Verb.GroundPound));
+            if (inMidair) {
+                GroundPound();
+            }
+            RemoveVerb(Verb.Crouch);
+            RemoveCardUI(Array.Find(cards, card => card.GetVerb() == Verb.Crouch));
         }
         // restock verbs
         if(Input.GetKeyDown(restockVerbsKey)) RestockVerbs();
@@ -185,23 +186,15 @@ public class Player : MonoBehaviour {
     private void RestockVerbs() {
         availableVerbs = new List<Verb>();
         // uniform distribution, all equal chance
-        List<Verb> allVerbs = new List<Verb> {Verb.Jump, Verb.Dash};
+        List<Verb> allVerbs = new List<Verb> {Verb.Jump, Verb.Dash, Verb.Crouch};
         for (var i = 0; i < 3; i++) {
-            var randomIndex = Random.Range(0, 2);
-            Debug.Log(randomIndex);
+            var randomIndex = Random.Range(0, allVerbs.Count);
             var randomVerb = allVerbs[randomIndex];
             availableVerbs.Add(randomVerb);
         }
-        //Debug.Log("GENERATED NEW VERBS");
-        //PrintAvailableVerbs();
-        if (inMidair)
-        {
-            JumpsToGroundPounds();
-        }
-        else
-        {
-            SetCardsUI();
-        }
+        // Debug.Log("GENERATED NEW VERBS");
+        // PrintAvailableVerbs();
+        SetCardsUI();
     }
 
     private void SetCardsUI(){
@@ -216,24 +209,6 @@ public class Player : MonoBehaviour {
     private void RemoveVerb(Verb verb)
     {
         availableVerbs[availableVerbs.FindIndex(v => v == verb)] = Verb.None;
-    }
-
-    private void JumpsToGroundPounds(){
-        while (availableVerbs.Contains(Verb.Jump))
-        {
-            availableVerbs[availableVerbs.FindIndex(verb => verb == Verb.Jump)] = Verb.GroundPound;
-        }
-        SetCardsUI();
-    }
-    private void GroundPoundsToJumps()
-    {
-        //Debug.Log("S:"+availableVerbs.FindIndex(verb => verb == Verb.GroundPound));
-        while (availableVerbs.Contains(Verb.GroundPound))
-        {
-            Debug.Log("GPS");
-            availableVerbs[availableVerbs.FindIndex(verb => verb == Verb.GroundPound)] = Verb.Jump;
-        }
-        SetCardsUI();
     }
 
     private void RemoveCardUI(Card card){
@@ -260,7 +235,6 @@ public class Player : MonoBehaviour {
             inMidair = false;
             jumpedAfterDash=false;
             isPounding = false;
-            GroundPoundsToJumps();
         }
     }
 

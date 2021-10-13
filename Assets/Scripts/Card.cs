@@ -21,7 +21,7 @@ public class Card : MonoBehaviour
         if(verb==Player.Verb.Dash){
            thisImage.sprite=dash;
         }
-        else if (verb == Player.Verb.GroundPound)
+        else if (verb == Player.Verb.Crouch)
         {
             thisImage.sprite = groundPound;
         }

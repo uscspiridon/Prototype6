@@ -90,4 +90,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dash: {fileID: 21300000, guid: 1a14189d74ccfc345ab40cb20cc968c1, type: 3}
   jump: {fileID: 21300000, guid: 576456b9be66c334ebf44785a83fbfaf, type: 3}
+  groundPound: {fileID: 21300000, guid: 8bf59678f3b8262499fe02a77cfc7dab, type: 3}
   blank: {fileID: 21300000, guid: 99e9f451b4fdea7418fcf0765277a822, type: 3}

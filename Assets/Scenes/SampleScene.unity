@@ -2333,10 +2333,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card1
       objectReference: {fileID: 0}
-    - target: {fileID: 1852199055617551941, guid: 3b4ac120ccd2ead4883b6b08336859bb, type: 3}
-      propertyPath: groundPound
-      value: 
-      objectReference: {fileID: 21300000, guid: 8bf59678f3b8262499fe02a77cfc7dab, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b4ac120ccd2ead4883b6b08336859bb, type: 3}
 --- !u!1001 &2088240451753027287
