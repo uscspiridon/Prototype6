@@ -249,12 +249,16 @@ public class Player : MonoBehaviour {
     }
 
     private void SetCardsUI(){
-        for(int i =0; i<cards.Length;i++){
-            if (availableVerbs.Count > i)
-            {
-                cards[i].SetCard(availableVerbs[i]);
-            }
+        for (int i = 0; i < cards.Length; i++) {
+            if(i >= availableVerbs.Count) cards[i].SetCard(Verb.None);
+            else cards[i].SetCard(availableVerbs[i]);
         }
+        // for(int i =0; i<cards.Length;i++){
+        //     if (availableVerbs.Count > i)
+        //     {
+        //         cards[i].SetCard(availableVerbs[i]);
+        //     }
+        // }
     }
 
     private void RemoveVerb(Verb verb)
