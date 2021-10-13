@@ -162,14 +162,18 @@ public class Player : MonoBehaviour {
             rb.AddForce(new Vector2(xForce, yForce));
 
             RemoveVerb(Verb.Jump);
-            RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Jump));
+            // RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Jump));
+            SetCardsUI();
+
             PrintAvailableVerbs();
         }
         // dash
         if (availableVerbs.Contains(Verb.Dash) && Input.GetKeyDown(dashKey)) {
             Dash();
             RemoveVerb(Verb.Dash);
-            RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Dash));
+            // RemoveCardUI(Array.Find(cards, card=>card.GetVerb()==Verb.Dash));
+            SetCardsUI();
+
             PrintAvailableVerbs();
             if(inMidair){
                 jumpedAfterDash = false;
@@ -187,7 +191,8 @@ public class Player : MonoBehaviour {
             }
             
             RemoveVerb(Verb.Crouch);
-            RemoveCardUI(Array.Find(cards, card => card.GetVerb() == Verb.Crouch));
+            SetCardsUI();
+            // RemoveCardUI(Array.Find(cards, card => card.GetVerb() == Verb.Crouch));
         }
         // restock verbs
         if (Input.GetKeyDown(reshuffleKey)) {
@@ -250,8 +255,8 @@ public class Player : MonoBehaviour {
 
     private void SetCardsUI(){
         for (int i = 0; i < cards.Length; i++) {
-            if(i >= availableVerbs.Count) cards[i].SetCard(Verb.None);
-            else cards[i].SetCard(availableVerbs[i]);
+            // if(i >= availableVerbs.Count) cards[i].SetCard(Verb.None);
+            cards[i].SetCard(availableVerbs[i]);
         }
         // for(int i =0; i<cards.Length;i++){
         //     if (availableVerbs.Count > i)
