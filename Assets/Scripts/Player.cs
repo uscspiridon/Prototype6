@@ -203,9 +203,6 @@ public class Player : MonoBehaviour {
         //Restart level after a delay
         StartCoroutine(RestartDelay(deathDelay));
     }
-    private void Jump() {
-        
-    }
 
     private void Dash() {
         // rb.AddForce(new Vector2(dashForce, 0));
@@ -227,7 +224,25 @@ public class Player : MonoBehaviour {
             var randomIndex = Random.Range(0, allVerbs.Count);
             var randomVerb = allVerbs[randomIndex];
             availableVerbs.Add(randomVerb);
+            // rebalance probabilities
+            if (randomVerb == Verb.Dash || randomVerb == Verb.Crouch) {
+                allVerbs.Add(Verb.Jump);
+            }
+            if (randomVerb == Verb.Jump) {
+                allVerbs.Add(Verb.Dash);
+                allVerbs.Add(Verb.Crouch);
+            }
         }
+
+        Verb lastVerb = availableVerbs[0];
+        bool allTheSame = true;
+        for (int i = 1; i < availableVerbs.Count; i++) {
+            if (availableVerbs[i] != lastVerb) {
+                allTheSame = false;
+                break;
+            }
+        }
+        if(allTheSame) ReshuffleVerbs();
         // Debug.Log("GENERATED NEW VERBS");
         // PrintAvailableVerbs();
         SetCardsUI();
@@ -245,6 +260,11 @@ public class Player : MonoBehaviour {
     private void RemoveVerb(Verb verb)
     {
         availableVerbs[availableVerbs.FindIndex(v => v == verb)] = Verb.None;
+        
+        foreach (Verb availableVerb in availableVerbs) {
+            if (availableVerb != Verb.None) return;
+        }
+        ReshuffleVerbs();
     }
 
     private void RemoveCardUI(Card card){
