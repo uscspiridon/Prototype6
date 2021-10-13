@@ -266,7 +266,7 @@ MonoBehaviour:
   jumpKey: 273
   dashKey: 275
   crouchKey: 274
-  restockVerbsKey: 32
+  reshuffleKey: 32
   cards:
   - {fileID: 0}
   - {fileID: 0}

@@ -30,7 +30,7 @@ public class Player : MonoBehaviour {
     public KeyCode jumpKey;
     public KeyCode dashKey;
     public KeyCode crouchKey;
-    public KeyCode restockVerbsKey;
+    public KeyCode reshuffleKey;
     
     //Cards to interact with
     public Card[] cards;
@@ -40,6 +40,7 @@ public class Player : MonoBehaviour {
     private SpriteRenderer sprite;
     private Color originalColor;
     private Animator animator;
+    public static Player Instance;
     
     // Basically to help know when to set rb.y velocity to 0
     private bool jumpedAfterDash = false;
@@ -67,6 +68,7 @@ public class Player : MonoBehaviour {
     private float deathDelay = 0f;
 
     private void Awake() {
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -76,7 +78,7 @@ public class Player : MonoBehaviour {
     void Start() {
         originalColor = sprite.color;
         availableVerbs = new List<Verb>(3);
-        RestockVerbs();
+        ReshuffleVerbs();
     }
 
     // Update is called once per frame
@@ -188,7 +190,10 @@ public class Player : MonoBehaviour {
             RemoveCardUI(Array.Find(cards, card => card.GetVerb() == Verb.Crouch));
         }
         // restock verbs
-        if(Input.GetKeyDown(restockVerbsKey)) RestockVerbs();
+        if (Input.GetKeyDown(reshuffleKey)) {
+            ReshuffleVerbs();
+            Score.Instance.ApplyReshufflePenalty();
+        }
     }
     //Called by spikes
     public void Die()
@@ -214,7 +219,7 @@ public class Player : MonoBehaviour {
         StartCoroutine(GroundPoundProcess(0.2f));
     }
 
-    private void RestockVerbs() {
+    private void ReshuffleVerbs() {
         availableVerbs = new List<Verb>();
         // uniform distribution, all equal chance
         List<Verb> allVerbs = new List<Verb> {Verb.Jump, Verb.Dash, Verb.Crouch};
